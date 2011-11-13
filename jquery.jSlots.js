@@ -1,5 +1,4 @@
 
-
 (function($){
     
     $.jSlots = function(el, options){
@@ -20,13 +19,27 @@
             
         };
         
+        
+        /* --------------------------------------------------------------------- */
+        // DEFAULT OPTIONS
+        /* --------------------------------------------------------------------- */
+
+        $.jSlots.defaultOptions = {
+            number : 3, // number of slots
+            winnerNumber : 1, // number upon which to win, zero-based index
+            spinner : '', // selector to start the slots on event
+            spinEvent : 'click', // event to respond to
+            onStart : $.noop,
+            onWin : $.noop, // function to run on win
+            easing : 'swing'
+        };
+        
         /* --------------------------------------------------------------------- */
         // HELPERS
         /* --------------------------------------------------------------------- */
         
-        base.randomRange = function(minNum, maxNum) {
-            var multiplier = maxNum-minNum+1;
-        	return Math.floor(Math.random()*multiplier+minNum);
+        base.randomRange = function(low, high) {
+            return Math.floor( Math.random() * (1 + high - low) ) + low;
         };
         
         /* --------------------------------------------------------------------- */
@@ -34,6 +47,15 @@
         /* --------------------------------------------------------------------- */
         
         base.isSpinning = false;
+        base.spinSpeed = 0;
+        base.winCount = 0;
+        base.doneCount = 0;
+        
+        base.$liHeight = 0;
+        base.$liWidth = 0;
+        
+        base.winners = [];
+        
         
         /* --------------------------------------------------------------------- */
         // FUNCTIONS
@@ -47,138 +69,147 @@
             var $list = base.$el;
             var $li = $list.find('li').first();
             
-            var height = $li.outerHeight();
-            var width = $li.outerWidth();
+            base.$liHeight = $li.outerHeight();
+            base.$liWidth = $li.outerWidth();
             
-            var $listWrapper = $list.wrap('<div class="jSlots-wrapper"></div>')
+            base.liCount = base.$el.children().length;
             
-            $listWrapper.css({
-                overflow: 'hidden',
-                height: height
-            })
+            base.listHeight = base.$liHeight * base.liCount;
+            
+            $li.clone().appendTo($list);
+            
+            base.$wrapper = $list.wrap('<div class="jSlots-wrapper"></div>').parent();
+            
+            base.allSlots = [];
+            
+            base.$el.remove();
             
             // clone lists
             for (var i = base.options.number - 1; i >= 0; i--){
-                base.$el.clone().appendTo($listWrapper);
+                base.allSlots.push( new base.Slot() );
             }
             
-        }
+        };
+        
+        base.bindEvents = function() {
+            $(base.options.spinner).bind(base.options.spinEvent, function(event) {
+                if (!base.isSpinning) {
+                    base.playSlots();
+                }
+            });
+        };
+        
+        // new Slot contstructor
+        base.Slot = function() {
+            
+            this.spinSpeed = 0;
+            this.el = base.$el.clone().appendTo(base.$wrapper)[0];
+            this.$el = $(this.el);
+            
+        };
+        
+        
+        base.Slot.prototype = {
+            
+            spinEm : function() {
 
+                var that = this;
+                
+                that.$el
+                    .css('margin-top', -base.listHeight)
+                    .animate( {'margin-top': '0px'}, that.spinSpeed, 'linear', function() {
+                        that.lowerSpeed();
+                    });
+
+            },
+            
+            lowerSpeed : function() {
+                
+                this.spinSpeed += 200;
+
+                if ( this.spinSpeed < 1200 ) {
+
+                    this.spinEm();
+
+                } else {
+
+                    this.finish();
+
+                }
+            },
+            
+            finish : function() {
+                
+                var that = this;
+                
+                var endNum = base.randomRange( 1, base.liCount );
+
+                var finalPos = - ( (base.$liHeight * endNum) - base.$liHeight );
+                var finalSpeed = ( (this.spinSpeed * 0.5) * (base.liCount) ) / endNum;
+
+                that.$el
+                    .css('margin-top', -base.listHeight)
+                    .animate( {'margin-top': finalPos}, finalSpeed, base.options.easing, function() {
+                        base.checkWinner(endNum, that);
+                    });
+                
+            }
+            
+        };
         
+        base.checkWinner = function(endNum, slot) {
+            
+            base.doneCount++;
+
+            if (endNum === base.options.winnerNumber) {
+                base.winCount++;
+                base.winners.push(slot.$el);
+            }
+
+            if (base.doneCount === base.options.number) {
+                
+                if ( base.winCount && $.isFunction(base.options.onWin) ) {
+                    base.options.onWin(base.winCount, base.winners);
+                }
+                base.isSpinning = false;
+            }
+        };
         
-        base.spinEm = function() {
-            
-            
-            
-        }
         
         base.playSlots = function() {
 
-        	base.isSpinning = true;
-        	var winCount = 0;
-        	var finishedCount = 0;
-
-        	slotNumber = base.options.number
-
-        	$('.slot').each( function() {
-
-    			var currentList = $(this);
-
-    			var firstItem = currentList.children('li:first');
-    			var myList = currentList.children('li');
-    			var listHeight = -( firstItem.outerHeight() * ( myList.length-1) );
-
-    			var spinSpeed = 200;
-
-    			function lowerSpeed() {
-
-    				if ( spinSpeed < 1000 ) {
-    					spinSpeed +=200
-    					spinEm()
-    				} else {
-
-    					spinSpeed +=200
-    					
-    					var myNum = base.randomRange(1, (myList.length-1) )
-
-    					var finalPos = - ( (firstItem.outerHeight() * myNum)-firstItem.outerHeight() )
-    					var finalSpeed = ( (spinSpeed * .5) * (myList.length-1) ) / myNum				
-
-    					function checkWinner() {
-    						finishedCount++
-
-    						if (myNum == 1) {
-    							sevenCount++
-    						}
-    						if (slotNumber > $('.slot').length) {
-    							slotNumber = $('.slot').length
-    						}
-
-    						if (finishedCount == slotNumber) {
-    							winAmount = 0
-
-    							if (sevenCount == 1) {
-    								//alert('1 seven!')
-    								winAmount = betAmount * 5
-    							} else if (sevenCount == 2) {
-    								//alert('2 sevens!')
-    								winAmount = betAmount * 40
-    							} else if (sevenCount >= 3) {
-    								//alert('WTF, 3 sevens!')
-    								winAmount = betAmount * 300
-    							} 
-
-    							isPlaying = false
-    						}
-    					}
-
-    					currentList.css('margin-top',listHeight).animate( {'margin-top': finalPos}, finalSpeed, 'swing', checkWinner)
-
-    				}
-    			}
-
-    			function spinEm() {
-    				currentList.css('margin-top',listHeight).animate( {'margin-top': '0px'}, spinSpeed, 'linear', lowerSpeed )
-    			}
-
-    			spinEm()
-
-        	});
-        
+            base.isSpinning = true;
+            base.winCount = 0;
+            base.doneCount = 0;
+            base.spinSpeed = 0;
+            base.winners = [];
             
-        }
-        
-        base.bindEvents = function() {
-            $(base.options.start).bind(base.options.startEvent, function(event) {
-                if (!base.isSpinning) {
-                    base.spinEm();
-                }
+            if ( $.isFunction(base.options.onStart) ) {
+                base.options.onStart();
+            }
+
+            $.each(base.allSlots, function(index, val) {
+                this.spinSpeed = 0;
+                this.spinEm();
             });
-        }
+            
+        };
+        
+        
         
         
         base.onWin = function() {
-            if ( $.isFunction(base.options.win) ) {
-                base.options.win();
+            if ( $.isFunction(base.options.onWin) ) {
+                base.options.onWin();
             }
-        }
+        };
         
         
         // Run initializer
         base.init();
     };
     
-    /* --------------------------------------------------------------------- */
-    // DEFAULT OPTIONS
-    /* --------------------------------------------------------------------- */
     
-    $.jSlots.defaultOptions = {
-        number : 3, // number of slots
-        winnerNumber : 6, // number upon which to win, zero-based index
-        win : $.noop, // function to run on win
-        start : '', // selector to start the slideshow on click
-        startEvent : 'click' // event to respond to
-    };
     
     /* --------------------------------------------------------------------- */
     // JQUERY FN
@@ -193,53 +224,3 @@
     };
     
 })(jQuery);
-
-
-
-
-
-
-
-
-
-
-
-$(document).ready(function () {
-
-
-
-$('.slot').each( function(){
-	
-	var currentList = $(this)
-	
-	var firstItem = currentList.children('li:first')
-	
-	firstItem.clone().appendTo( currentList )
-	var myList = currentList.children('li')
-	var listHeight = -( firstItem.outerHeight() * ( myList.length-1) )
-	
-	currentList.css('margin-top',listHeight)
-		
-})
-
-
-function 
-}
-
-var isPlaying = false
-
-$('#playButton').click(function(){
-	var checkBet = $('#bet').val()
-	var checkMoney = $('#money').val()
-	
-	if (!isPlaying && checkBet<=checkMoney) {
-		playSlots()
-		$(this).attr('disabled',true)
-	} else {
-		//do nothing
-	}
-})
-
-
-
-})
