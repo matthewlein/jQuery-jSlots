@@ -55,6 +55,7 @@
         base.$liWidth = 0;
         
         base.winners = [];
+        base.allSlots = [];
         
         
         /* --------------------------------------------------------------------- */
@@ -80,8 +81,7 @@
             
             base.$wrapper = $list.wrap('<div class="jSlots-wrapper"></div>').parent();
             
-            base.allSlots = [];
-            
+            // remove original, so it can be recreated with Slot 'top's
             base.$el.remove();
             
             // clone lists
@@ -116,8 +116,8 @@
                 var that = this;
                 
                 that.$el
-                    .css('margin-top', -base.listHeight)
-                    .animate( {'margin-top': '0px'}, that.spinSpeed, 'linear', function() {
+                    .css( 'top', -base.listHeight)
+                    .animate( { 'top' : '0px'}, that.spinSpeed, 'linear', function() {
                         that.lowerSpeed();
                     });
 
@@ -148,8 +148,8 @@
                 var finalSpeed = ( (this.spinSpeed * 0.5) * (base.liCount) ) / endNum;
 
                 that.$el
-                    .css('margin-top', -base.listHeight)
-                    .animate( {'margin-top': finalPos}, finalSpeed, base.options.easing, function() {
+                    .css( 'top', -base.listHeight )
+                    .animate( {'top': finalPos}, finalSpeed, base.options.easing, function() {
                         base.checkWinner(endNum, that);
                     });
                 
@@ -194,9 +194,7 @@
             });
             
         };
-        
-        
-        
+
         
         base.onWin = function() {
             if ( $.isFunction(base.options.onWin) ) {

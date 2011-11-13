@@ -23,6 +23,7 @@ ul {
 
 .slot {
     float: left;
+    position: relative;
 }
 
 .slot li {
@@ -36,6 +37,7 @@ ul {
     font-family: 'Gravitas One', serif;
     border-left: 1px solid #999;
 }
+
 .slot:first-child li {
     border-left: none;
 }
@@ -63,6 +65,136 @@ ul {
     background-color: #FF0000;
 }
 
+.slot li span {
+    display: block;
+}
+
+/*
+@-webkit-keyframes winner,
+   @-moz-keyframes winner,
+    @-ms-keyframes winner {
+        
+        0%, 50%, 100% {
+            -webkit-transform: rotate(0deg);
+               -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                 -o-transform: rotate(0deg);
+                    transform: rotate(0deg);
+        }
+        25% {
+            -webkit-transform: rotate(20deg);
+               -moz-transform: rotate(20deg);
+                -ms-transform: rotate(20deg);
+                 -o-transform: rotate(20deg);
+                    transform: rotate(20deg);
+        }
+        75% {
+            -webkit-transform: rotate(-20deg);
+               -moz-transform: rotate(-20deg);
+                -ms-transform: rotate(-20deg);
+                 -o-transform: rotate(-20deg);
+                    transform: rotate(-20deg);
+        }
+}
+*/
+
+@-webkit-keyframes winner {
+        0%, 50%, 100% {
+            -webkit-transform: rotate(0deg);
+            font-size:70px;
+            color: #fff;
+        }
+        25% {
+            -webkit-transform: rotate(20deg);
+            font-size:90px;
+            color: #FF16D8;
+        }
+        75% {
+            -webkit-transform: rotate(-20deg);
+            font-size:90px;
+            color: #FF16D8;
+        }
+}
+@-moz-keyframes winner {
+        0%, 50%, 100% {
+            -moz-transform: rotate(0deg);
+            font-size:70px;
+            color: #fff;
+        }
+        25% {
+            -moz-transform: rotate(20deg);
+            font-size:90px;
+            color: #FF16D8;
+        }
+        75% {
+            -moz-transform: rotate(-20deg);
+            font-size:90px;
+            color: #FF16D8;
+        }
+}
+@-ms-keyframes winner {
+        0%, 50%, 100% {
+            -ms-transform: rotate(0deg);
+            font-size:70px;
+            color: #fff;
+        }
+        25% {
+            -ms-transform: rotate(20deg);
+            font-size:90px;
+            color: #FF16D8;
+        }
+        75% {
+            -ms-transform: rotate(-20deg);
+            font-size:90px;
+            color: #FF16D8;
+        }
+}
+
+
+@-webkit-keyframes winnerBox {
+        0%, 50%, 100% {
+            box-shadow: inset 0 0  0px yellow;
+            background-color: #FF0000;
+        }
+        25%, 75% {
+            box-shadow: inset 0 0 30px yellow;
+            background-color: aqua;
+        }
+}
+@-moz-keyframes winnerBox {
+        0%, 50%, 100% {
+            box-shadow: inset 0 0  0px yellow;
+            background-color: #FF0000;
+        }
+        25%, 75% {
+            box-shadow: inset 0 0 30px yellow;
+            background-color: aqua;
+        }
+}
+@-ms-keyframes winnerBox {
+        0%, 50%, 100% {
+            box-shadow: inset 0 0  0px yellow;
+            background-color: #FF0000;
+        }
+        25%, 75% {
+            box-shadow: inset 0 0 30px yellow;
+            background-color: aqua;
+        }
+}
+
+
+
+.winner li {
+    -webkit-animation: winnerBox 2s infinite linear;
+       -moz-animation: winnerBox 2s infinite linear;
+        -ms-animation: winnerBox 2s infinite linear;
+}
+.winner li span {
+     -webkit-animation: winner 2s infinite linear;
+        -moz-animation: winner 2s infinite linear;
+         -ms-animation: winner 2s infinite linear;
+}
+
 </style>
 
 
@@ -75,13 +207,13 @@ ul {
         <h2>jSlots – Lucky 7's!</h2>
             <div class="normal">
                 <ul class="slot">
-                    <li>7</li>
-                    <li>6</li>
-                    <li>5</li>
-                    <li>4</li>
-                    <li>3</li>
-                    <li>2</li>
-                    <li>1</li>
+                    <li><span>7</span></li>
+                    <li><span>6</span></li>
+                    <li><span>5</span></li>
+                    <li><span>4</span></li>
+                    <li><span>3</span></li>
+                    <li><span>2</span></li>
+                    <li><span>1</span></li>
                 </ul>
             </div>
         <div id="controls">
@@ -111,7 +243,7 @@ ul {
         
         
         $('.slot').jSlots({
-            number : 8,
+            number : 3,
             winnerNumber : 1,
             onWin : function(winCount, winners) {
                 $.each(winners, function(index, val) {
