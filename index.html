@@ -16,7 +16,7 @@ ul {
 
 .jSlots-wrapper {
     overflow: hidden;
-    height: 100px;
+    height: 20px;
     display: inline-block; /* to size correctly, can use float too, or width*/
     border: 1px solid #999;
 }
@@ -26,7 +26,19 @@ ul {
     position: relative;
 }
 
-.slot li {
+
+
+/* ---------------------------------------------------------------------
+   FANCY EXAMPLE
+--------------------------------------------------------------------- */
+.fancy .jSlots-wrapper {
+    overflow: hidden;
+    height: 100px;
+    display: inline-block; /* to size correctly, can use float too, or width*/
+    border: 1px solid #999;
+}
+
+.fancy .slot li {
     width: 100px;
     line-height: 100px;
     text-align: center;
@@ -38,65 +50,40 @@ ul {
     border-left: 1px solid #999;
 }
 
-.slot:first-child li {
+.fancy .slot:first-child li {
     border-left: none;
 }
 
-.slot li:nth-child(7) {
+.fancy .slot li:nth-child(7) {
     background-color: #FFCE29;
 }
-.slot li:nth-child(6) {
+.fancy .slot li:nth-child(6) {
     background-color: #FFA22B;
 }
-.slot li:nth-child(5) {
+.fancy .slot li:nth-child(5) {
     background-color: #FF8645;
 }
-.slot li:nth-child(4) {
+.fancy .slot li:nth-child(4) {
     background-color: #FF6D3F;
 }
-.slot li:nth-child(3) {
+.fancy .slot li:nth-child(3) {
     background-color: #FF494C;
 }
-.slot li:nth-child(2) {
+.fancy .slot li:nth-child(2) {
     background-color: #FF3333;
 }
-.slot li:nth-child(1),
-.slot li:nth-child(8) {
+.fancy .slot li:nth-child(1),
+.fancy .slot li:nth-child(8) {
     background-color: #FF0000;
 }
 
-.slot li span {
+.fancy .slot li span {
     display: block;
 }
 
-/*
-@-webkit-keyframes winner,
-   @-moz-keyframes winner,
-    @-ms-keyframes winner {
-        
-        0%, 50%, 100% {
-            -webkit-transform: rotate(0deg);
-               -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                 -o-transform: rotate(0deg);
-                    transform: rotate(0deg);
-        }
-        25% {
-            -webkit-transform: rotate(20deg);
-               -moz-transform: rotate(20deg);
-                -ms-transform: rotate(20deg);
-                 -o-transform: rotate(20deg);
-                    transform: rotate(20deg);
-        }
-        75% {
-            -webkit-transform: rotate(-20deg);
-               -moz-transform: rotate(-20deg);
-                -ms-transform: rotate(-20deg);
-                 -o-transform: rotate(-20deg);
-                    transform: rotate(-20deg);
-        }
-}
-*/
+/* ---------------------------------------------------------------------
+   ANIMATIONS
+--------------------------------------------------------------------- */
 
 @-webkit-keyframes winner {
         0%, 50%, 100% {
@@ -203,9 +190,24 @@ ul {
 <body>
     <div id="wrapper">
         <div id="content">
-        <!--#include virtual="/inc/experiment-header.html" -->
-        <h2>jSlots – Lucky 7's!</h2>
+
+            <h1>jSlots – Lucky 7's!</h1>
+        
             <div class="normal">
+                <ul class="slot">
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                </ul>
+                <input type="button" id="playNormal" value="play">
+            </div>
+        
+            
+            <div class="fancy">
                 <ul class="slot">
                     <li><span>7</span></li>
                     <li><span>6</span></li>
@@ -215,23 +217,8 @@ ul {
                     <li><span>2</span></li>
                     <li><span>1</span></li>
                 </ul>
+                <input type="button" id="playFancy" value="Play">
             </div>
-        <div id="controls">
-            <input type="button" id="playBtn" value="play">
-        </div>
-        <!-- 
-        <div class="fancy">
-            <ul class="slot">
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-                <li>6</li>
-                <li>7</li>
-            </ul>
-        </div>
-         -->
 
         </div>
     </div>
@@ -241,9 +228,15 @@ ul {
     <script src="jquery.jSlots.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
         
+        // normal example
+        $('.normal .slot').jSlots({
+            spinner : '#playNormal'
+        })
         
-        $('.slot').jSlots({
-            number : 3,
+        
+        // fancy example
+        $('.fancy .slot').jSlots({
+            number : 7,
             winnerNumber : 1,
             onWin : function(winCount, winners) {
                 $.each(winners, function(index, val) {
@@ -253,8 +246,7 @@ ul {
             onStart : function() {
                 $('.slot').removeClass('winner')
             },
-            spinner : '#playBtn',
-            spinEvent : 'click',
+            spinner : '#playFancy',
             easing : 'easeOutSine'
         });
         
