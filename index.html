@@ -211,6 +211,7 @@ ul {
             
             <div class="fancy">
                 <ul class="slot">
+                    <!-- In reverse order so the 7s show on load -->
                     <li><span>7</span></li>
                     <li><span>6</span></li>
                     <li><span>5</span></li>
@@ -232,26 +233,35 @@ ul {
         
         // normal example
         $('.normal .slot').jSlots({
-            spinner : '#playNormal'
-        })
+            spinner : '#playNormal',
+            winnerNumber : 7
+        });
         
         
         // fancy example
         $('.fancy .slot').jSlots({
             number : 7,
             winnerNumber : 1,
-            onWin : function(winCount, winners) {
-                $.each(winners, function(index, val) {
-                    this.addClass('winner');
-                });
-            },
-            onStart : function() {
-                $('.slot').removeClass('winner');
-            },
             spinner : '#playFancy',
             easing : 'easeOutSine',
             time : 7000,
-            loops : 6
+            loops : 6,
+            onStart : function() {
+                $('.slot').removeClass('winner');
+            },
+            onWin : function(winCount, winners) {
+                
+                $.each(winners, function() {
+                    this.addClass('winner');
+                });
+                
+                if ( winCount === 1 ) {
+                    alert('You got ' + winCount + ' 7!!!');
+                } else if ( winCount > 1 ) {
+                    alert('You got ' + winCount + ' 7’s!!!');
+                }
+                
+            }
         });
         
         

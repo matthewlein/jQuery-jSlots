@@ -26,14 +26,14 @@
 
         $.jSlots.defaultOptions = {
             number : 3, // number of slots
-            winnerNumber : 1, // number upon which to win, zero-based index
+            winnerNumber : 1, // list item number upon which to win, one-based index, NOT ZERO-BASED
             spinner : '', // selector to start the slots on event
             spinEvent : 'click', // event to respond to
             onStart : $.noop,
             onWin : $.noop, // function to run on win
-            easing : 'swing',
-            time : 2000,
-            loops : 6
+            easing : 'swing', // easing type for final spin
+            time : 7000, // total time of animation
+            loops : 6 // number of rotations in the time
         };
         
         /* --------------------------------------------------------------------- */
@@ -115,13 +115,14 @@
         
         base.Slot.prototype = {
             
+            // do one rotation
             spinEm : function() {
 
                 var that = this;
                 
                 that.$el
-                    .css( 'top', -base.listHeight)
-                    .animate( { 'top' : '0px'}, that.spinSpeed, 'linear', function() {
+                    .css( 'top', -base.listHeight )
+                    .animate( { 'top' : '0px' }, that.spinSpeed, 'linear', function() {
                         that.lowerSpeed();
                     });
 
@@ -143,6 +144,7 @@
                 }
             },
             
+            // final rotation
             finish : function() {
                 
                 var that = this;
