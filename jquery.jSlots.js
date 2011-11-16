@@ -31,7 +31,9 @@
             spinEvent : 'click', // event to respond to
             onStart : $.noop,
             onWin : $.noop, // function to run on win
-            easing : 'swing'
+            easing : 'swing',
+            time : 2000,
+            loops : 6
         };
         
         /* --------------------------------------------------------------------- */
@@ -57,7 +59,6 @@
         base.winners = [];
         base.allSlots = [];
         
-        
         /* --------------------------------------------------------------------- */
         // FUNCTIONS
         /* --------------------------------------------------------------------- */
@@ -76,6 +77,8 @@
             base.liCount = base.$el.children().length;
             
             base.listHeight = base.$liHeight * base.liCount;
+            
+            base.increment = (base.options.time / base.options.loops) / base.options.loops;
             
             $li.clone().appendTo($list);
             
@@ -105,6 +108,7 @@
             this.spinSpeed = 0;
             this.el = base.$el.clone().appendTo(base.$wrapper)[0];
             this.$el = $(this.el);
+            this.loopCount = 0;
             
         };
         
@@ -124,10 +128,11 @@
             },
             
             lowerSpeed : function() {
-                
-                this.spinSpeed += 200;
 
-                if ( this.spinSpeed < 1200 ) {
+                this.spinSpeed += base.increment;
+                this.loopCount++;
+
+                if ( this.loopCount < base.options.loops ) {
 
                     this.spinEm();
 
@@ -190,6 +195,7 @@
 
             $.each(base.allSlots, function(index, val) {
                 this.spinSpeed = 0;
+                this.loopCount = 0;
                 this.spinEm();
             });
             

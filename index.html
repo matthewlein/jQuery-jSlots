@@ -8,6 +8,8 @@
 <link href='http://fonts.googleapis.com/css?family=Gravitas+One&text=1234567' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
+
+
 ul {
     padding: 0;
     margin: 0;
@@ -240,14 +242,16 @@ ul {
             winnerNumber : 1,
             onWin : function(winCount, winners) {
                 $.each(winners, function(index, val) {
-                    this.addClass('winner')
+                    this.addClass('winner');
                 });
             },
             onStart : function() {
-                $('.slot').removeClass('winner')
+                $('.slot').removeClass('winner');
             },
             spinner : '#playFancy',
-            easing : 'easeOutSine'
+            easing : 'easeOutSine',
+            time : 7000,
+            loops : 6
         });
         
         
