@@ -189,52 +189,27 @@ ul {
 
 </head>
 <body>
-    <div id="wrapper">
-        <div id="content">
-
-            <h1>jQuery jSlots – Lucky 7's!</h1>
-        
-            <div class="normal">
-                <ul class="slot">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                </ul>
-                <input type="button" id="playNormal" value="play">
-            </div>
         
             
-            <div class="fancy">
-                <ul class="slot">
-                    <!-- In reverse order so the 7s show on load -->
-                    <li><span>7</span></li>
-                    <li><span>6</span></li>
-                    <li><span>5</span></li>
-                    <li><span>4</span></li>
-                    <li><span>3</span></li>
-                    <li><span>2</span></li>
-                    <li><span>1</span></li>
-                </ul>
-                <input type="button" id="playFancy" value="Play">
-            </div>
-
-        </div>
+    <div class="fancy">
+        <ul class="slot">
+            <!-- In reverse order so the 7s show on load -->
+            <li><span>7</span></li>
+            <li><span>6</span></li>
+            <li><span>5</span></li>
+            <li><span>4</span></li>
+            <li><span>3</span></li>
+            <li><span>2</span></li>
+            <li><span>1</span></li>
+        </ul>
+        <input type="button" id="playFancy" value="Play">
     </div>
+
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-    <script src="jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
-    <script src="jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
-        
-        // normal example
-        $('.normal .slot').jSlots({
-            spinner : '#playNormal',
-            winnerNumber : 7
-        });
         
         
         // fancy example

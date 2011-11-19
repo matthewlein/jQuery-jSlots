@@ -80,6 +80,8 @@
             base.listHeight = base.$liHeight * base.liCount;
             
             base.increment = (base.options.time / base.options.loops) / base.options.loops;
+                
+            $list.css('position', 'relative');
             
             $li.clone().appendTo($list);
             

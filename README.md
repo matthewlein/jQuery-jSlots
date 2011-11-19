@@ -21,7 +21,7 @@ These are the options, with their default values, and what they do
     
 ## Usage 
 
-Attach jQuery (untested)
+Attach jQuery (successfully tested down to v1.4.1)
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     
