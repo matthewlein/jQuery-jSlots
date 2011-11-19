@@ -59,11 +59,11 @@ Target the list and make it a jSlot!
         
     </script>
     
-Styling is up to you, but jSlots supplies a jSlots-wrapper div around your lists that should get `overflow: hidden` set on it. Here are some recommended styles:
+Styling is up to you, but jSlots supplies a jSlots-wrapper div around your lists that should get `overflow: hidden` and a height set on it. Here are some recommended styles:
 
     .jSlots-wrapper {
         overflow: hidden; /* to hide the magic */
         height: 20px; /* whatever the height of your list items are */
-        display: inline-block; /* to size correctly, can use float too, or width*/
+        display: inline-block; /* to size width correctly, can use float too, or width*/
         border: 1px solid #999;
     }
