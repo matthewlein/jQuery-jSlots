@@ -193,7 +193,7 @@ ul {
     <div id="wrapper">
         <div id="content">
 
-            <h1>jSlots – Lucky 7's!</h1>
+            <h1>jQuery jSlots – Lucky 7's!</h1>
         
             <div class="normal">
                 <ul class="slot">
@@ -250,15 +250,17 @@ ul {
                 $('.slot').removeClass('winner');
             },
             onWin : function(winCount, winners) {
+                // only fires if you win
                 
                 $.each(winners, function() {
                     this.addClass('winner');
                 });
-                
+
+                // react to the # of winning slots                 
                 if ( winCount === 1 ) {
-                    alert('You got ' + winCount + ' 7!!!');
+                    //alert('You got ' + winCount + ' 7!!!');
                 } else if ( winCount > 1 ) {
-                    alert('You got ' + winCount + ' 7’s!!!');
+                    //alert('You got ' + winCount + ' 7’s!!!');
                 }
                 
             }

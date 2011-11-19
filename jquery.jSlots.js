@@ -25,15 +25,16 @@
         /* --------------------------------------------------------------------- */
 
         $.jSlots.defaultOptions = {
-            number : 3, // number of slots
-            winnerNumber : 1, // list item number upon which to win, one-based index, NOT ZERO-BASED
-            spinner : '', // selector to start the slots on event
-            spinEvent : 'click', // event to respond to
-            onStart : $.noop,
-            onWin : $.noop, // function to run on win
-            easing : 'swing', // easing type for final spin
-            time : 7000, // total time of animation
-            loops : 6 // number of rotations in the time
+            number : 3,          // Number: number of slots
+            winnerNumber : 1,    // Number: list item number upon which to trigger a win, 1-based index, NOT ZERO-BASED
+            spinner : '',        // CSS Selector: element to bind the start event to
+            spinEvent : 'click', // String: event to start slots on this event
+            onStart : $.noop,    // Function: runs on spin start,
+            onEnd : $.noop,      // Function: run on spin end
+            onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array)
+            easing : 'swing',    // String: easing type for final spin
+            time : 7000,         // Number: total time of spin animation
+            loops : 6            // Number: times it will spin during the animation
         };
         
         /* --------------------------------------------------------------------- */
@@ -174,6 +175,10 @@
             }
 
             if (base.doneCount === base.options.number) {
+                
+                if ( $.isFunction( base.options.onEnd ) ) {
+                    base.options.onEnd();
+                }
                 
                 if ( base.winCount && $.isFunction(base.options.onWin) ) {
                     base.options.onWin(base.winCount, base.winners);
