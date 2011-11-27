@@ -14,7 +14,7 @@ These are the options, with their default values, and what they do
         onStart : $.noop,    // Function: runs on spin start,
         onEnd : $.noop,      // Function: run on spin end
         onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array)
-        easing : 'swing',    // String: easing type for final spin
+        easing : 'swing',    // String: easing type for final spin. I recommend the easing plugin and easeOutSine, or an easeOut of your choice.
         time : 7000,         // Number: total time of spin animation
         loops : 6            // Number: times it will spin during the animation
     };

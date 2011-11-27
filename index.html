@@ -4,8 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>jSlots Slot Machine - Matthew Lein</title>
 
-
 <link href='http://fonts.googleapis.com/css?family=Gravitas+One&text=1234567' rel='stylesheet' type='text/css'>
+
+<!-- Syntax highlighting, ignore this -->
+<link rel="stylesheet" href="SyntaxHighlighter/Styles/SyntaxHighlighter.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
 <style type="text/css">
 
@@ -27,7 +29,9 @@ ul {
     float: left;
 }
 
-
+input[type="button"] {
+    display: block;
+}
 
 /* ---------------------------------------------------------------------
    FANCY EXAMPLE
@@ -183,6 +187,11 @@ ul {
          -ms-animation: winner 2s infinite linear;
 }
 
+/* Syntax Highlighter, ignore */
+.dp-highlighter ol {
+    padding: 10px;
+}
+
 </style>
 
 
@@ -193,20 +202,8 @@ ul {
         <div id="content">
 
             <h1>jQuery jSlots – Lucky 7's!</h1>
-        
-            <div class="normal">
-                <ul class="slot">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                </ul>
-                <input type="button" id="playNormal" value="play">
-            </div>
-        
+            
+            <p>jSlots is 2k of jQuery slot machine magic. It turns any list (&lt;ol&gt; or &lt;ul&gt;) into a slot machine!</p>
             
             <div class="fancy">
                 <ul class="slot">
@@ -224,6 +221,91 @@ ul {
 
         </div>
     </div>
+    
+    <section class="demos">
+        <h2>Demos</h2>
+        <ul>
+            <li><a href="demos/simple.html">Super simple basic 3 slot</a></li>
+            <li><a href="demos/fancy.html">Fun fancy 7 slot (shown above)</a></li>
+        </ul>
+    </section>
+    
+    <section class="docs">
+
+        <h2>Options</h2>
+
+        <p>These are the options, with their default values, and what they do</p>
+
+        <pre name="code" class="js">
+$.jSlots.defaultOptions = {
+    number : 3,          // Number: number of slots
+    winnerNumber : 1,    // Number: list item number upon which to trigger a win, 1-based index, NOT ZERO-BASED
+    spinner : '',        // CSS Selector: element to bind the start event to
+    spinEvent : 'click', // String: event to start slots on this event
+    onStart : $.noop,    // Function: runs on spin start,
+    onEnd : $.noop,      // Function: run on spin end
+    onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array)
+    easing : 'swing',    // String: easing type for final spin. I recommend the easing plugin and easeOutSine, or an easeOut of your choice.
+    time : 7000,         // Number: total time of spin animation
+    loops : 6            // Number: times it will spin during the animation
+};</pre>
+
+        <h2 id="scroll_to_here">Usage</h2>
+
+        <p>Attach jQuery (successfully tested down to v1.4.1)</p>
+
+        <pre name="code" class="html">
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"&gt;&lt;/script&gt;</pre>
+
+        <p>Attach jSlots plugin</p>
+
+        <pre name="code" class="html">
+&lt;script src="jquery.jSlots.js" charset="utf-8"&gt;&lt;/script&gt;</pre>
+
+        <p>Attach easing plugin (optional but HIGHLY recommended for nice animation)</p>
+
+        <pre name="code" class="html">
+&lt;script src="jquery.easing.1.3.js" charset="utf-8"&gt;&lt;/script&gt;</pre>
+
+        <p>Create a list and an element that will spin the slots</p>
+
+        <pre name="code" class="html">
+&lt;ul class="slot"&gt;
+    &lt;li&gt;1&lt;/li&gt;
+    &lt;li&gt;2&lt;/li&gt;
+    &lt;li&gt;3&lt;/li&gt;
+    &lt;li&gt;4&lt;/li&gt;
+    &lt;li&gt;5&lt;/li&gt;
+    &lt;li&gt;6&lt;/li&gt;
+    &lt;li&gt;7&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- this button will start the spin --&gt;
+&lt;input type="button" id="playBtn" value="play"&gt;</pre>
+
+        <p>Target the list and make it a jSlot!</p>
+
+        <pre name="code" class="html">
+&lt;script type="text/javascript" charset="utf-8"&gt;
+
+    $('.slot').jSlots({
+        spinner : '#playBtn',
+        winnerNumber : 7
+    });
+
+&lt;/script&gt;</pre>
+
+        <p>Styling is up to you, but jSlots supplies a jSlots-wrapper div around your lists that should get overflow: hidden and a height set on it. Here are some recommended styles:</p>
+
+        <pre name="code" class="css">
+.jSlots-wrapper {
+    overflow: hidden; /* to hide the magic */
+    height: 20px; /* whatever the height of your list items are */
+    display: inline-block; /* to size width correctly, can use float too, or width*/
+    border: 1px solid #999;
+}</pre>
+        
+    </section>
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script src="jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
@@ -267,6 +349,18 @@ ul {
         
         
     </script>
+    
+    <!-- Syntax highlighting, ignore this -->
+    <script src="SyntaxHighlighter/Scripts/shCore.js" type="text/javascript" charset="utf-8"></script>
+    <script src="SyntaxHighlighter/Scripts/shBrushCss.js" type="text/javascript" charset="utf-8"></script>
+    <script src="SyntaxHighlighter/Scripts/shBrushJScript.js" type="text/javascript" charset="utf-8"></script>
+    <script src="SyntaxHighlighter/Scripts/shBrushXml.js" type="text/javascript" charset="utf-8"></script>
+    <script language="javascript">
+        dp.SyntaxHighlighter.ClipboardSwf = '/flash/clipboard.swf';
+        dp.SyntaxHighlighter.HighlightAll('code', false, false )//, [collapseAll], [firstLine], [showColumns] );
+        //HighlightAll(name, [showGutter], [showControls], [collapseAll], [firstLine], [showColumns])
+    </script>
+    <!-- /Syntax highlighting -->
     
 </body>
 </html>
