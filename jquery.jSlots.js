@@ -2,7 +2,7 @@
  * jQuery jSlots Plugin
  * http://matthewlein.com/jslot/
  * Copyright (c) 2011 Matthew Lein
- * Version: 1.0 (11/27/2011)
+ * Version: 1.0.1 (2/08/2012)
  * Dual licensed under the MIT and GPL licenses
  * Requires: jQuery v1.4.1 or later
  */
@@ -38,7 +38,7 @@
             spinner : '',        // CSS Selector: element to bind the start event to
             spinEvent : 'click', // String: event to start slots on this event
             onStart : $.noop,    // Function: runs on spin start,
-            onEnd : $.noop,      // Function: run on spin end
+            onEnd : $.noop,      // Function: run on spin end. It is passed (finalNumbers:Array). finalNumbers gives the index of the li each slot stopped on in order.
             onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array)
             easing : 'swing',    // String: easing type for final spin
             time : 7000,         // Number: total time of spin animation
@@ -120,6 +120,7 @@
             this.el = base.$el.clone().appendTo(base.$wrapper)[0];
             this.$el = $(this.el);
             this.loopCount = 0;
+            this.number = 0;
             
         };
         
@@ -178,6 +179,8 @@
         base.checkWinner = function(endNum, slot) {
             
             base.doneCount++;
+            // set the slot number to whatever it ended on
+            slot.number = endNum;
 
             if (endNum === base.options.winnerNumber) {
                 base.winCount++;
@@ -186,12 +189,18 @@
 
             if (base.doneCount === base.options.number) {
                 
+                var finalNumbers = [];
+                
+                $.each(base.allSlots, function(index, val) {
+                    finalNumbers[index] = val.number;
+                });
+                
                 if ( $.isFunction( base.options.onEnd ) ) {
-                    base.options.onEnd();
+                    base.options.onEnd(finalNumbers);
                 }
                 
                 if ( base.winCount && $.isFunction(base.options.onWin) ) {
-                    base.options.onWin(base.winCount, base.winners);
+                    base.options.onWin(base.winCount, base.winners, finalNumbers);
                 }
                 base.isSpinning = false;
             }
