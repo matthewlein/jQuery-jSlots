@@ -202,9 +202,9 @@ input[type="button"] {
         <div id="content">
 
             <h1>jQuery jSlots – Lucky 7's!</h1>
-            
+
             <p>jSlots is 2k of jQuery slot machine magic. It turns any list (&lt;ol&gt; or &lt;ul&gt;) into a slot machine!</p>
-            
+
             <div class="fancy">
                 <ul class="slot">
                     <!-- In reverse order so the 7s show on load -->
@@ -221,7 +221,7 @@ input[type="button"] {
 
         </div>
     </div>
-    
+
     <section class="demos">
         <h2>Demos</h2>
         <ul>
@@ -229,7 +229,7 @@ input[type="button"] {
             <li><a href="demos/fancy.html">Fun fancy 7 slot (shown above)</a></li>
         </ul>
     </section>
-    
+
     <section class="docs">
 
         <h2>Options</h2>
@@ -239,7 +239,7 @@ input[type="button"] {
         <pre name="code" class="js">
 $.jSlots.defaultOptions = {
     number : 3,          // Number: number of slots
-    winnerNumber : 1,    // Number: list item number upon which to trigger a win, 1-based index, NOT ZERO-BASED
+    winnerNumber : 1,    // Number or Array: list item number(s) upon which to trigger a win, 1-based index, NOT ZERO-BASED
     spinner : '',        // CSS Selector: element to bind the start event to
     spinEvent : 'click', // String: event to start slots on this event
     onStart : $.noop,    // Function: runs on spin start,
@@ -304,21 +304,21 @@ $.jSlots.defaultOptions = {
     display: inline-block; /* to size width correctly, can use float too, or width*/
     border: 1px solid #999;
 }</pre>
-        
+
     </section>
-    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="jquery.easing.1.3.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery.jSlots.min.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
-        
+
         // normal example
         $('.normal .slot').jSlots({
             spinner : '#playNormal',
             winnerNumber : 7
         });
-        
-        
+
+
         // fancy example
         $('.fancy .slot').jSlots({
             number : 7,
@@ -330,26 +330,26 @@ $.jSlots.defaultOptions = {
             onStart : function() {
                 $('.slot').removeClass('winner');
             },
-            onWin : function(winCount, winners) {
+            onWin : function(winCount, winners, finalNumbers) {
                 // only fires if you win
-                
+
                 $.each(winners, function() {
                     this.addClass('winner');
                 });
 
-                // react to the # of winning slots                 
+                // react to the # of winning slots
                 if ( winCount === 1 ) {
                     //alert('You got ' + winCount + ' 7!!!');
                 } else if ( winCount > 1 ) {
                     //alert('You got ' + winCount + ' 7’s!!!');
                 }
-                
+
             }
         });
-        
-        
+
+
     </script>
-    
+
     <!-- Syntax highlighting, ignore this -->
     <script src="SyntaxHighlighter/Scripts/shCore.js" type="text/javascript" charset="utf-8"></script>
     <script src="SyntaxHighlighter/Scripts/shBrushCss.js" type="text/javascript" charset="utf-8"></script>
@@ -361,6 +361,6 @@ $.jSlots.defaultOptions = {
         //HighlightAll(name, [showGutter], [showControls], [collapseAll], [firstLine], [showColumns])
     </script>
     <!-- /Syntax highlighting -->
-    
+
 </body>
 </html>
