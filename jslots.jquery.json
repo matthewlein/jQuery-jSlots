@@ -4,13 +4,13 @@
     "description": "jSlots is 2k of jQuery slot machine magic. It turns any list (&lt;ol&gt; or &lt;ul&gt;) into a slot machine!",
     "keywords": [
         "slots",
-        "slot machine",
         "gambling",
         "lists",
         "fun",
+        "zany",
         "winning"
     ],
-    "version": "1.0.2",
+    "version": "1.0.3",
     "dependencies": {
         "jquery": ">=1.4.1"
     },
