@@ -42,7 +42,10 @@
             onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array)
             easing : 'swing',    // String: easing type for final spin
             time : 7000,         // Number: total time of spin animation
-            loops : 6            // Number: times it will spin during the animation
+            loops : 6,           // Number: times it will spin during the animation (or times it will spin to get to minimumSpeed in infinite mode)
+			minimumSpeed : 1000, // Number: minimum speed the slot can spin (works only in infinite mode)
+			infinite : false,    // Boolean: if it spins infinitely
+            endsAt : []          // Array: manually set final numbers
         };
 
         // --------------------------------------------------------------------- //
@@ -87,8 +90,20 @@
 
             base.listHeight = base.$liHeight * base.liCount;
 
-            base.increment = (base.options.time / base.options.loops) / base.options.loops;
-
+			// default increment speed
+			
+			if (base.isInfinite()) {
+				
+				// the slots take options.loops loops to get to its minimum speed
+				base.increment = base.options.minimumSpeed / (base.options.loops - 1);
+				
+			} else {
+				
+				// lower speed when number of loops is finite
+				base.increment = (base.options.time / base.options.loops) / base.options.loops;
+			
+			}
+			
             $list.css('position', 'relative');
 
             $li.clone().appendTo($list);
@@ -103,7 +118,18 @@
                 base.allSlots.push( new base.Slot() );
             }
 
+            // set final numbers
+            if (!$.isEmptyObject(base.options.endsAt)) {
+                $.each(base.allSlots, function(index, val) {
+                    val.endNum = base.options.endsAt[index];
+                    val.isSpinning = false;
+                }); 
+            }
         };
+		
+		base.isInfinite = function () {
+			return base.options.infinite;
+		};
 
         base.bindEvents = function() {
             $(base.options.spinner).bind(base.options.spinEvent, function(event) {
@@ -112,16 +138,39 @@
                 }
             });
         };
+		
+		base.stop = function (idx) {
+		
+			if ($.isArray(idx)) {
+			
+				$.each(base.allSlots, function(index, val) {
+					val.endNum = idx[index];
+					val.isSpinning = false;
+				});
+				
+			} else {
+			
+				$.each(base.allSlots, function(index, val) {
+					if (idx) {
+						val.endNum = idx;
+					}
+					val.isSpinning = false;
+				});
+				
+			}			
+		};
 
         // Slot contstructor
         base.Slot = function() {
-
+		
             this.spinSpeed = 0;
             this.el = base.$el.clone().appendTo(base.$wrapper)[0];
             this.$el = $(this.el);
             this.loopCount = 0;
             this.number = 0;
-
+			this.isSpinning = true;
+			delete this.endNum;
+			
         };
 
 
@@ -142,10 +191,15 @@
 
             lowerSpeed : function() {
 
-                this.spinSpeed += base.increment;
-                this.loopCount++;
+				if (!base.isInfinite() || this.loopCount <= base.options.loops) {
+				
+					this.spinSpeed += base.increment;
+				
+				}
 
-                if ( this.loopCount < base.options.loops ) {
+                this.loopCount++;
+                
+                if (this.isSpinning && (base.isInfinite() || this.loopCount < base.options.loops )) {
 
                     this.spinEm();
 
@@ -160,8 +214,11 @@
             finish : function() {
 
                 var that = this;
-
-                var endNum = base.randomRange( 1, base.liCount );
+				var endNum = base.randomRange( 1, base.liCount );
+				
+				if (this.endNum) {
+					endNum = this.endNum;
+				}
 
                 var finalPos = - ( (base.$liHeight * endNum) - base.$liHeight );
                 var finalSpeed = ( (this.spinSpeed * 0.5) * (base.liCount) ) / endNum;
@@ -169,6 +226,7 @@
                 that.$el
                     .css( 'top', -base.listHeight )
                     .animate( {'top': finalPos}, finalSpeed, base.options.easing, function() {
+						that.isSpinning = false;
                         base.checkWinner(endNum, that);
                     });
 
@@ -222,12 +280,13 @@
             base.winners = [];
 
             if ( $.isFunction(base.options.onStart) ) {
-                base.options.onStart();
+                base.options.onStart(base);
             }
 
             $.each(base.allSlots, function(index, val) {
                 this.spinSpeed = 0;
                 this.loopCount = 0;
+				this.isSpinning = true;
                 this.spinEm();
             });
 
