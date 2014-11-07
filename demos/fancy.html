@@ -190,7 +190,7 @@ ul {
 </head>
 <body>
         
-            
+    <h2>Always stop at 1234567</h2>
     <div class="fancy">
         <ul class="slot">
             <!-- In reverse order so the 7s show on load -->
@@ -220,7 +220,9 @@ ul {
             easing : 'easeOutSine',
             time : 7000,
             loops : 6,
-            onStart : function() {
+            // new functionality : set final numbers
+            endsAt : [7, 6, 5, 4, 3, 2, 1],
+            onStart : function(jslot) {
                 $('.slot').removeClass('winner');
             },
             onWin : function(winCount, winners) {

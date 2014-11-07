@@ -6,18 +6,21 @@ jSlots is 2k of jQuery slot machine magic. It turns any list (`<ol>` or `<ul>`) 
 
 These are the options, with their default values, and what they do
 
-    $.jSlots.defaultOptions = {
-        number : 3,          // Number: number of slots
-        winnerNumber : 1,    // Number or Array: list item number(s) upon which to trigger a win, 1-based index, NOT ZERO-BASED
-        spinner : '',        // CSS Selector: element to bind the start event to
-        spinEvent : 'click', // String: event to start slots on this event
-        onStart : $.noop,    // Function: runs on spin start,
-        onEnd : $.noop,      // Function: run on spin end. It is passed (finalNumbers:Array). finalNumbers gives the index of the li each slot stopped on in order.
-        onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array, finalNumbers:Array)
-        easing : 'swing',    // String: easing type for final spin. I recommend the easing plugin and easeOutSine, or an easeOut of your choice.
-        time : 7000,         // Number: total time of spin animation
-        loops : 6            // Number: times it will spin during the animation
-    };
+    $.jSlots.defaultOptions = {  
+        number : 3,          // Number: number of slots  
+        winnerNumber : 1,    // Number or Array: list item number(s) upon which to trigger a win, 1-based index, NOT ZERO-BASED  
+        spinner : '',        // CSS Selector: element to bind the start event to  
+        spinEvent : 'click', // String: event to start slots on this event  
+        onStart : $.noop,    // Function: runs on spin start,  
+        onEnd : $.noop,      // Function: run on spin end. It is passed (finalNumbers:Array). finalNumbers gives the index of the li each slot stopped on in order.  
+        onWin : $.noop,      // Function: run on winning number. It is passed (winCount:Number, winners:Array)  
+        easing : 'swing',    // String: easing type for final spin  
+        time : 7000,         // Number: total time of spin animation  
+        loops : 6,           // Number: times it will spin during the animation (or times it will spin to get to minimumSpeed in infinite mode)  
+        minimumSpeed : 1000, // Number: minimum speed the slot can spin (works only in infinite mode)  
+        infinite : false,    // Boolean: if it spins infinitely  
+        endsAt : []          // Array: manually set final numbers  
+    };  
 
 ## Usage
 
@@ -58,6 +61,21 @@ Target the list and make it a jSlot!
         });
 
     </script>
+   
+You can spin it infinitely, and stop it manually
+
+	<script type="text/javascript" charset="utf-8">  
+
+        $('.slot').jSlots({  
+            spinner : '#playBtn',  
+            winnerNumber : 7,  
+            infinite : true,  
+            onStart : function (jslot) {  
+                setTimeout(function() { jslot.stop([1, 2, 3, 4, 5, 6, 7]); }, 2000);  
+            }  
+        });  
+
+    </script>  
 
 Styling is up to you, but jSlots supplies a jSlots-wrapper div around your lists that should get `overflow: hidden` and a height set on it. Here are some recommended styles:
 
