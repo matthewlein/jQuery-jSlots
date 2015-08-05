@@ -1,0 +1,16 @@
+{
+  "name": "jqjslosts",
+  "version": "1.0.3",
+  "homepage": "https://github.com/sonrac/jQuery-jSlots",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
