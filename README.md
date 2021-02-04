@@ -1,4 +1,5 @@
-# jQuery jSlots
+#G
+ jQuery jSlots
 
 jSlots is 2k of jQuery slot machine magic. It turns any list (`<ol>` or `<ul>`) into a slot machine!
 
